@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Mongoose</title>
+	<!-- <link rel="stylesheet" href="/stylesheets/style.css" /> -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			// this triggers the connection even in our server!
+			var socket = io.connect();
+			socket.on('mongo_users', function (data) {
+				console.log(data);
+				//console.log(data.users[0].name);
+				for (user in data){
+				 $('tbody#table-insert').append('<tr><td>' + data[user].name + '</td><td>' + data[user].age +'</td></tr>');
+				}
+				// socket.emit('update_log', { msg : '<li>' + data.response + '</li>' })
+			});
+		})
+	</script>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="cols-sm-12">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Age</th>
+						</tr>
+					</thead>
+					<tbody id="table-insert">
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="cols-sm-12">
+				<form action="/users" method="post">
+					<div class="form-group">
+						<label for="name">Name*</label>
+						<input type="text" class="form-control" name="name" placeholder="enter name">
+					</div>
+					<div class="form-group">
+						<label for="age">Age*</label>
+						<input type="text" class="form-control" name="age" placeholder="enter age">
+					</div>
+					<button type="submit" class="btn btn-default">Submit</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
